@@ -3,6 +3,11 @@ import PlaygroundSupport
 import ImagineEngine
 
 class AsteroidBlasterScene: Scene {
+    
+    var dropSpeed : Metric = 100.0
+    
+    
+    
     override func setup() {
         backgroundColor = Color(red: 0, green: 0, blue: 0.3, alpha: 1)
         
@@ -26,22 +31,9 @@ class AsteroidBlasterScene: Scene {
             house.position.x = x
             house.position.y = ground.rect.minY - house.size.height / 2
             
-            timeline.repeat(withInterval: 2, using: self) { scene in
-                
-                let asteroid = Actor()
-                asteroid.animation = Animation(name: "Asteroid", frameCount: 1, frameDuration: 0)
-                scene.add(asteroid)
-            
-                let positionRange = scene.size.width - asteroid.size.width
-                let randomPosition = Metric(arc4random() % UInt32(positionRange))
-                asteroid.position.x = asteroid.size.width / 2 + randomPosition
-            
-                asteroid.velocity.dy = 400
-                
-            
-            }
-        }
 
+        }
+        
         timeline.repeat(withInterval: 2, using: self) { scene in
             
             let asteroid = Actor()
@@ -52,8 +44,14 @@ class AsteroidBlasterScene: Scene {
             let randomPosition = Metric(arc4random() % UInt32(positionRange))
             asteroid.position.x = asteroid.size.width / 2 + randomPosition
             
-            asteroid.velocity.dy = 400
+            self.dropSpeed += Metric(arc4random_uniform(25))
+            print(self.dropSpeed)
+            asteroid.velocity.dy = self.dropSpeed
             
+            
+        }
+
+        
     }
     
 }
@@ -64,4 +62,3 @@ let scene = AsteroidBlasterScene(size: sceneSize)
 PlaygroundPage.current.liveView = GameViewController(scene: scene)
 
 
-}
